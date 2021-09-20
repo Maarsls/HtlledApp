@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_key_in_widget_constructors
 
 import 'dart:async';
 import 'dart:convert';
@@ -26,16 +26,16 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   String _messageBuffer = '';
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   bool _isDisconnecting = false;
   bool _isConnecting = true;
-  late bool isConnected;
+  bool isConnected = false;
   List<Widget> _children = [];
   @override
   void initState() {
     super.initState();
-    bl = new BluetoothManager(widget.device);
+    bl = BluetoothManager(widget.device);
 
     _children.add(RGB(bl));
     _children.add(Modus(bl));
@@ -45,7 +45,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
       bl.setConnection(connection);
       _isConnecting = false;
       _isDisconnecting = false;
-      isConnected = bl.getConnection().isConnected;
+      isConnected = bl.getConnection()!.isConnected;
     }).catchError((error) {
       print('Cannot connect, exception occured');
       print(error);
@@ -55,10 +55,10 @@ class _DeviceScreenState extends State<DeviceScreen> {
   @override
   void dispose() {
     // Avoid memory leak (`setState` after dispose) and disconnect
-    //if (isConnected) {
-    _isDisconnecting = true;
-    bl.getConnection().dispose();
-    //}
+    if (isConnected) {
+      _isDisconnecting = true;
+      bl.getConnection()!.dispose();
+    }
 
     super.dispose();
   }

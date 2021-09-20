@@ -1,12 +1,7 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:htl_led/FindDevicesScreen.dart';
-import 'package:htl_led/FindDevicesScreenBLE.dart';
-
-import 'BluetoothOffScreen.dart';
+import 'package:htl_led/BluetoothOffScreen.dart';
+import 'package:htl_led/DeviceChange.dart';
 
 void main() {
   runApp(MainApp());
@@ -23,7 +18,7 @@ class MainApp extends StatelessWidget {
           builder: (c, snapshot) {
             final state = snapshot.data;
             if (state == BluetoothState.on) {
-              return FindDevicesScreen();
+              return const DeviceChange();
             }
             return BluetoothOffScreen(state: state);
           }),

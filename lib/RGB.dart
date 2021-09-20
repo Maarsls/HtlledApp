@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:htl_led/Modus.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:htl_led/models/BluetoothManager.dart';
 
 class RGB extends StatefulWidget {
@@ -23,50 +23,60 @@ class _OptionsState extends State<RGB> {
 
   @override
   Widget build(BuildContext context) {
+    var red = 0.0;
+    var green = 0.0;
+    var blue = 0.0;
     return Center(
       child: Column(
         children: <Widget>[
-          ElevatedButton(
-            onPressed: () => _showAutonom(),
-            child: Text("Autonom fahren"),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  child: SpinBox(
+                    value: 10,
+                    decoration: const InputDecoration(labelText: 'LEDs'),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 200),
+                ),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () => widget.manager.sendMessageToBluetooth("C"),
-            child: Text("selbst steuern"),
+          const Text('RED'),
+          Slider(
+            value: red,
+            onChanged: (newRating) {
+              setState(() => red = newRating);
+            },
+            activeColor: Colors.red,
+            label: "$red",
+            min: 0,
+            max: 255,
+          ),
+          const Text('GREEN'),
+          Slider(
+            value: green,
+            onChanged: (newRating) {
+              setState(() => green = newRating);
+            },
+            activeColor: Colors.green,
+            label: "$green",
+            min: 0,
+            max: 255,
+          ),
+          const Text('BLUE'),
+          Slider(
+            value: blue,
+            onChanged: (newRating) {
+              setState(() => blue = newRating);
+            },
+            activeColor: Colors.blue,
+            label: "$blue",
+            min: 0,
+            max: 255,
           )
         ],
       ),
-    );
-  }
-
-  Future<void> _showAutonom() async {
-    //widget.m.method();
-    //widget.manager.sendMessageToBluetooth("C");
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Du fährst nun autonom'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Willst du wieder selbst steuren,'),
-                Text('dann klicke unten auf Steuerung'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('verstanden'),
-              onPressed: () {
-                Navigator.pop(context);
-                widget.manager.sendMessageToBluetooth("C");
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

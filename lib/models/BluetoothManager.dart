@@ -6,11 +6,11 @@ import 'dart:typed_data';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class BluetoothManager {
-  late String _address;
-  late BluetoothConnection _connection;
-  late bool _isConnecting;
-  late bool _isDisconnecting;
-  late BluetoothDevice _device;
+  String? _address;
+  BluetoothConnection? _connection;
+  bool? _isConnecting;
+  bool? _isDisconnecting;
+  BluetoothDevice? _device;
 
   BluetoothManager(BluetoothDevice device) {
     _address = device.address;
@@ -18,13 +18,13 @@ class BluetoothManager {
     _device = device;
   }
 
-  BluetoothDevice getDevice() {
+  BluetoothDevice? getDevice() {
     return _device;
   }
 
   void sendMessageToBluetooth(String data) async {
-    _connection.output.add(Uint8List.fromList(utf8.encode(data + "\r\n")));
-    await _connection.output.allSent;
+    _connection!.output.add(Uint8List.fromList(utf8.encode(data + "\r\n")));
+    await _connection!.output.allSent;
   }
 
   void setConnection(BluetoothConnection connection) {
@@ -32,19 +32,19 @@ class BluetoothManager {
     _isConnecting = false;
   }
 
-  BluetoothConnection getConnection() {
+  BluetoothConnection? getConnection() {
     return _connection;
   }
 
-  bool getIsConnecting() {
+  bool? getIsConnecting() {
     return _isConnecting;
   }
 
-  bool getIsDisconnecting() {
+  bool? getIsDisconnecting() {
     return _isDisconnecting;
   }
 
-  String getAddress() {
+  String? getAddress() {
     return _address;
   }
 }

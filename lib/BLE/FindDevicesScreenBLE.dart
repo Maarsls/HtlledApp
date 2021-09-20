@@ -4,12 +4,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:htl_led/DeviceScreenBLE.dart';
+import 'package:htl_led/BLE/DeviceScreenBLE.dart';
 
 class FindDevicesScreenBLE extends StatefulWidget {
-  FindDevicesScreenBLE({Key? key, required this.title}) : super(key: key);
+  FindDevicesScreenBLE({Key? key}) : super(key: key);
 
-  final String title;
   final FlutterBlue flutterBlue = FlutterBlue.instance;
   final List<BluetoothDevice> devicesList = [];
 
@@ -70,6 +69,7 @@ try {
   }
 
   ListView _buildListViewOfDevices() {
+    print("I build");
     List<Container> containers = [];
     for (BluetoothDevice device in widget.devicesList) {
       if (device.name.toString().length > 2) {
@@ -108,10 +108,7 @@ try {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: _buildListViewOfDevices(),
-      );
+  Widget build(BuildContext context) {
+    return _buildListViewOfDevices();
+  }
 }
