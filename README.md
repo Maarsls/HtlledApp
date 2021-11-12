@@ -1,6 +1,7 @@
 # htl_led
 
-A new Flutter project.
+Eine App für die Steuerung unseres eigens entwickelnen LED Projekts. 
+Mehr Infos findest du auf unserer [Website](https://htlled.at).
 
 ## Getting Started
 
