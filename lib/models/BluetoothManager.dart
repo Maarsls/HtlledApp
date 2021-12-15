@@ -11,6 +11,7 @@ class BluetoothManager {
   bool? _isConnecting;
   bool? _isDisconnecting;
   BluetoothDevice? _device;
+  int sinceLastWrite = 0;
 
   BluetoothManager(BluetoothDevice device) {
     _address = device.address;
@@ -23,8 +24,18 @@ class BluetoothManager {
   }
 
   void sendMessageToBluetooth(String data) async {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(data + "\r\n")));
-    await _connection!.output.allSent;
+    if (isTime()) {
+      _connection!.output.add(Uint8List.fromList(utf8.encode(data + "\r\n")));
+      await _connection!.output.allSent.then(
+          (value) => sinceLastWrite = DateTime.now().millisecondsSinceEpoch);
+    }
+  }
+
+  bool isTime() {
+    if (DateTime.now().millisecondsSinceEpoch > sinceLastWrite + 1000)
+      return true;
+
+    return false;
   }
 
   void setConnection(BluetoothConnection connection) {

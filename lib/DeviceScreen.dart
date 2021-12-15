@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -24,11 +23,8 @@ class DeviceScreen extends StatefulWidget {
 class _DeviceScreenState extends State<DeviceScreen> {
   late BluetoothManager bl;
 
-  String _messageBuffer = '';
-
   int _selectedIndex = 1;
 
-  bool _isDisconnecting = false;
   bool _isConnecting = true;
   bool isConnected = false;
   List<Widget> _children = [];
@@ -41,11 +37,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
     _children.add(Modus(bl));
 
     BluetoothConnection.toAddress(bl.getAddress()).then((connection) {
-      print('Connected to the device');
       bl.setConnection(connection);
-      _isConnecting = false;
-      _isDisconnecting = false;
-      isConnected = bl.getConnection()!.isConnected;
+      setState(() {
+        _isConnecting = false;
+        isConnected = bl.getConnection()!.isConnected;
+      });
     }).catchError((error) {
       print('Cannot connect, exception occured');
       print(error);
@@ -56,15 +52,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
   void dispose() {
     // Avoid memory leak (`setState` after dispose) and disconnect
     if (isConnected) {
-      _isDisconnecting = true;
       bl.getConnection()!.dispose();
     }
 
     super.dispose();
   }
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {

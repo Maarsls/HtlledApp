@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
-import 'package:htl_led/models/BluetoothManager.dart';
-import 'models/globals.dart' as globals;
+import 'package:htl_led/models/BluetoothManagerBLE.dart';
+import '../models/globals.dart' as globals;
 
-class RGB extends StatefulWidget {
-  final BluetoothManager manager;
+class RGBBLE extends StatefulWidget {
+  final BluetoothManagerBLE manager;
 
-  const RGB(
+  const RGBBLE(
     this.manager,
   );
 
@@ -16,7 +16,7 @@ class RGB extends StatefulWidget {
   _OptionsState createState() => _OptionsState();
 }
 
-class _OptionsState extends State<RGB> {
+class _OptionsState extends State<RGBBLE> {
   @override
   void initState() {
     super.initState();
@@ -36,13 +36,11 @@ class _OptionsState extends State<RGB> {
                     max: 30,
                     value: globals.leds,
                     onChanged: (value) {
-                      if (widget.manager.isTime()) {
-                        setState(() {
-                          globals.leds = value;
-                        });
-                        widget.manager.sendMessageToBluetooth(
-                            "B " + globals.leds.toInt().toString());
-                      }
+                      setState(() {
+                        globals.leds = value;
+                      });
+                      widget.manager
+                          .sendMessage("B " + globals.leds.toInt().toString());
                     },
                     decoration: const InputDecoration(labelText: 'LEDs'),
                   ),
@@ -55,10 +53,7 @@ class _OptionsState extends State<RGB> {
           Slider(
             value: globals.r,
             onChangeEnd: (newRating) {
-              if (widget.manager.isTime()) {
-                widget.manager.sendMessageToBluetooth(
-                    "A " + globals.r.toInt().toString());
-              }
+              widget.manager.sendMessage("A " + globals.r.toInt().toString());
             },
             onChanged: (value) => setState(() => globals.r = value),
             activeColor: Colors.red,
@@ -70,10 +65,7 @@ class _OptionsState extends State<RGB> {
           Slider(
             value: globals.g,
             onChangeEnd: (newRating) {
-              if (widget.manager.isTime()) {
-                widget.manager.sendMessageToBluetooth(
-                    "B " + globals.g.toInt().toString());
-              }
+              widget.manager.sendMessage("B " + globals.g.toInt().toString());
             },
             onChanged: (value) => setState(() => globals.g = value),
             activeColor: Colors.green,
@@ -85,10 +77,7 @@ class _OptionsState extends State<RGB> {
           Slider(
             value: globals.b,
             onChangeEnd: (newRating) {
-              if (widget.manager.isTime()) {
-                widget.manager.sendMessageToBluetooth(
-                    "C " + globals.b.toInt().toString());
-              }
+              widget.manager.sendMessage("C " + globals.b.toInt().toString());
             },
             onChanged: (value) => setState(() => globals.b = value),
             activeColor: Colors.blue,

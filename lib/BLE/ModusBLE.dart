@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
-import 'package:htl_led/models/BluetoothManager.dart';
-import 'models/globals.dart' as globals;
+import 'package:htl_led/models/BluetoothManagerBLE.dart';
+import '../models/globals.dart' as globals;
 
-class Modus extends StatefulWidget {
-  final BluetoothManager manager;
+class ModusBLE extends StatefulWidget {
+  final BluetoothManagerBLE manager;
 
-  const Modus(
+  const ModusBLE(
     this.manager,
   );
 
@@ -16,7 +16,7 @@ class Modus extends StatefulWidget {
   _OptionsState createState() => _OptionsState();
 }
 
-class _OptionsState extends State<Modus> {
+class _OptionsState extends State<ModusBLE> {
   List<List<String>> modes = [];
   int _selectedMode = 0;
 
@@ -50,8 +50,8 @@ class _OptionsState extends State<Modus> {
                       setState(() {
                         globals.leds = value;
                       });
-                      widget.manager.sendMessageToBluetooth(
-                          "B " + globals.leds.toInt().toString());
+                      widget.manager
+                          .sendMessage("B " + globals.leds.toInt().toString());
                     },
                     decoration: const InputDecoration(labelText: 'LEDs'),
                   ),
@@ -66,16 +66,14 @@ class _OptionsState extends State<Modus> {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-                    if (widget.manager.isTime()) {
-                      setState(() {
-                        if (!(_selectedMode == 0))
-                          _selectedMode--;
-                        else
-                          _selectedMode = modes.length - 1;
-                      });
-                      widget.manager.sendMessageToBluetooth(
-                          "M " + (_selectedMode + 1).toString());
-                    }
+                    setState(() {
+                      if (!(_selectedMode == 0))
+                        _selectedMode--;
+                      else
+                        _selectedMode = modes.length - 1;
+                    });
+                    widget.manager
+                        .sendMessage("M " + (_selectedMode + 1).toString());
                   },
                   child: const Icon(Icons.arrow_left),
                   style: ButtonStyle(
@@ -90,16 +88,14 @@ class _OptionsState extends State<Modus> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    if (widget.manager.isTime()) {
-                      setState(() {
-                        if (!(_selectedMode == (modes.length - 1)))
-                          _selectedMode++;
-                        else
-                          _selectedMode = 0;
-                      });
-                      widget.manager.sendMessageToBluetooth(
-                          "M " + (_selectedMode + 1).toString());
-                    }
+                    setState(() {
+                      if (!(_selectedMode == (modes.length - 1)))
+                        _selectedMode++;
+                      else
+                        _selectedMode = 0;
+                    });
+                    widget.manager
+                        .sendMessage("M " + (_selectedMode + 1).toString());
                   },
                   child: const Icon(Icons.arrow_right),
                   style: ButtonStyle(
@@ -122,10 +118,8 @@ class _OptionsState extends State<Modus> {
                         setState(() => globals.v = newRating);
                       },
                       onChangeEnd: (value) {
-                        if (widget.manager.isTime()) {
-                          widget.manager.sendMessageToBluetooth(
-                              "A " + globals.v.toInt().toString());
-                        }
+                        widget.manager
+                            .sendMessage("A " + globals.v.toInt().toString());
                       },
                       activeColor: Colors.green,
                       label: "${globals.v}",
