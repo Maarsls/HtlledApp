@@ -40,7 +40,7 @@ class _OptionsState extends State<RGBBLE> {
                         globals.leds = value;
                       });
                       widget.manager
-                          .sendMessage("B " + globals.leds.toInt().toString());
+                          .sendMessage("N " + globals.leds.toInt().toString());
                     },
                     decoration: const InputDecoration(labelText: 'LEDs'),
                   ),

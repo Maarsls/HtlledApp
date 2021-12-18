@@ -41,7 +41,7 @@ class _OptionsState extends State<RGB> {
                           globals.leds = value;
                         });
                         widget.manager.sendMessageToBluetooth(
-                            "B " + globals.leds.toInt().toString());
+                            "N " + globals.leds.toInt().toString());
                       }
                     },
                     decoration: const InputDecoration(labelText: 'LEDs'),

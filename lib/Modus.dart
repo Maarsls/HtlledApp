@@ -35,6 +35,7 @@ class _OptionsState extends State<Modus> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Center(
       child: Column(
         children: [
@@ -51,7 +52,7 @@ class _OptionsState extends State<Modus> {
                         globals.leds = value;
                       });
                       widget.manager.sendMessageToBluetooth(
-                          "B " + globals.leds.toInt().toString());
+                          "N " + globals.leds.toInt().toString());
                     },
                     decoration: const InputDecoration(labelText: 'LEDs'),
                   ),
@@ -60,84 +61,92 @@ class _OptionsState extends State<Modus> {
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-            child: Row(
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    if (widget.manager.isTime()) {
-                      setState(() {
-                        if (!(_selectedMode == 0))
-                          _selectedMode--;
-                        else
-                          _selectedMode = modes.length - 1;
-                      });
-                      widget.manager.sendMessageToBluetooth(
-                          "M " + (_selectedMode + 1).toString());
-                    }
-                  },
-                  child: const Icon(Icons.arrow_left),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey),
-                  ),
-                ),
-                Image.network(
-                  modes[_selectedMode][0],
-                  width: 200,
-                  fit: BoxFit.contain,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (widget.manager.isTime()) {
-                      setState(() {
-                        if (!(_selectedMode == (modes.length - 1)))
-                          _selectedMode++;
-                        else
-                          _selectedMode = 0;
-                      });
-                      widget.manager.sendMessageToBluetooth(
-                          "M " + (_selectedMode + 1).toString());
-                    }
-                  },
-                  child: const Icon(Icons.arrow_right),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey),
-                  ),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            ),
-          ),
-          (modes[_selectedMode][1] == 'true')
-              ? Row(
-                  children: [
-                    const Text('Geschwindigkeit'),
-                    Slider(
-                      value: globals.v,
-                      onChanged: (newRating) {
-                        setState(() => globals.v = newRating);
-                      },
-                      onChangeEnd: (value) {
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+                child: Row(
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () {
                         if (widget.manager.isTime()) {
+                          setState(() {
+                            if (!(_selectedMode == 0))
+                              _selectedMode--;
+                            else
+                              _selectedMode = modes.length - 1;
+                          });
                           widget.manager.sendMessageToBluetooth(
-                              "A " + globals.v.toInt().toString());
+                              "M " + (_selectedMode + 1).toString());
                         }
                       },
-                      activeColor: Colors.green,
-                      label: "${globals.v}",
-                      min: 0,
-                      max: 255,
+                      child: const Icon(Icons.arrow_left),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.grey),
+                      ),
+                    ),
+                    Image.network(
+                      modes[_selectedMode][0],
+                      width: deviceWidth / 2,
+                      fit: BoxFit.contain,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (widget.manager.isTime()) {
+                          setState(() {
+                            if (!(_selectedMode == (modes.length - 1)))
+                              _selectedMode++;
+                            else
+                              _selectedMode = 0;
+                          });
+                          widget.manager.sendMessageToBluetooth(
+                              "M " + (_selectedMode + 1).toString());
+                        }
+                      },
+                      child: const Icon(Icons.arrow_right),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.grey),
+                      ),
                     ),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                )
-              : Row()
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+              ),
+              (modes[_selectedMode][1] == 'true')
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+                      child: Column(
+                        children: [
+                          const Text('Geschwindigkeit'),
+                          Slider(
+                            value: globals.v,
+                            onChanged: (newRating) {
+                              setState(() => globals.v = newRating);
+                            },
+                            onChangeEnd: (value) {
+                              if (widget.manager.isTime()) {
+                                widget.manager.sendMessageToBluetooth(
+                                    "A " + globals.v.toInt().toString());
+                              }
+                            },
+                            activeColor: Colors.green,
+                            label: "${globals.v}",
+                            min: 0,
+                            max: 255,
+                          ),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                    )
+                  : Row()
+            ],
+          ),
         ],
+        mainAxisAlignment: MainAxisAlignment.center,
       ),
     );
   }

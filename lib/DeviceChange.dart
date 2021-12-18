@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:htl_led/BLE/FindDevicesScreenBLE.dart';
 import 'package:htl_led/FindDevicesScreen.dart';
+import 'dart:io' show Platform;
+
+import 'package:htl_led/Information.dart';
 
 class DeviceChange extends StatefulWidget {
   const DeviceChange({Key? key}) : super(key: key);
@@ -21,28 +24,36 @@ class _DeviceChangeState extends State<DeviceChange> {
     super.initState();
 
     _children.add(FindDevicesScreenBLE());
-    _children.add(const FindDevicesScreen());
+    if (!Platform.isIOS) _children.add(const FindDevicesScreen());
+    _children.add(Information());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gefundene Geräte"),
+        title: (_selectedIndex != 2)
+            ? Text("Gefundene Geräte")
+            : Text("Informationen"),
       ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _children,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.rotate_90_degrees_ccw),
+            icon: Icon(Icons.bluetooth),
             label: 'BLE',
           ),
+          if (!Platform.isIOS)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bluetooth_searching),
+              label: 'Seriell',
+            ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.access_alarm),
-            label: 'Seriell',
+            icon: Icon(Icons.info_outline),
+            label: 'Information',
           ),
         ],
         currentIndex: _selectedIndex,

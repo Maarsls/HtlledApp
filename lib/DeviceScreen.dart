@@ -75,11 +75,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.rotate_90_degrees_ccw),
+            icon: Icon(Icons.colorize_outlined),
             label: 'RGB',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.car_rental),
+            icon: Icon(Icons.add_to_photos_outlined),
             label: 'Modus',
           ),
         ],

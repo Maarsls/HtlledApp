@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:htl_led/BLE/ModusBLE.dart';
 import 'package:htl_led/BLE/RGBBLE.dart';
@@ -58,11 +59,11 @@ class _DeviceScreenBLEState extends State<DeviceScreenBLE> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.rotate_90_degrees_ccw),
+            icon: Icon(Icons.colorize_outlined),
             label: 'RGB',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.car_rental),
+            icon: Icon(Icons.add_to_photos_outlined),
             label: 'Modus',
           ),
         ],

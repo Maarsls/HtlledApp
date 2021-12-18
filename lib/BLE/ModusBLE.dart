@@ -35,6 +35,7 @@ class _OptionsState extends State<ModusBLE> {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     return Center(
       child: Column(
         children: [
@@ -51,7 +52,7 @@ class _OptionsState extends State<ModusBLE> {
                         globals.leds = value;
                       });
                       widget.manager
-                          .sendMessage("B " + globals.leds.toInt().toString());
+                          .sendMessage("N " + globals.leds.toInt().toString());
                     },
                     decoration: const InputDecoration(labelText: 'LEDs'),
                   ),
@@ -83,7 +84,7 @@ class _OptionsState extends State<ModusBLE> {
                 ),
                 Image.network(
                   modes[_selectedMode][0],
-                  width: 200,
+                  width: deviceWidth / 2,
                   fit: BoxFit.contain,
                 ),
                 ElevatedButton(
@@ -109,26 +110,31 @@ class _OptionsState extends State<ModusBLE> {
             ),
           ),
           (modes[_selectedMode][1] == 'true')
-              ? Row(
-                  children: [
-                    const Text('Geschwindigkeit'),
-                    Slider(
-                      value: globals.v,
-                      onChanged: (newRating) {
-                        setState(() => globals.v = newRating);
-                      },
-                      onChangeEnd: (value) {
-                        widget.manager
-                            .sendMessage("A " + globals.v.toInt().toString());
-                      },
-                      activeColor: Colors.green,
-                      label: "${globals.v}",
-                      min: 0,
-                      max: 255,
-                    ),
-                  ],
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+                  child: Column(
+                    children: [
+                      const Text('Geschwindigkeit'),
+                      Slider(
+                        value: globals.v,
+                        onChanged: (newRating) {
+                          setState(() => globals.v = newRating);
+                        },
+                        onChangeEnd: (value) {
+                          if (widget.manager.isTime()) {
+                            widget.manager.sendMessage(
+                                "A " + globals.v.toInt().toString());
+                          }
+                        },
+                        activeColor: Colors.green,
+                        label: "${globals.v}",
+                        min: 0,
+                        max: 255,
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
                 )
               : Row()
         ],

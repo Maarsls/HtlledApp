@@ -25,7 +25,7 @@ class BluetoothManager {
 
   void sendMessageToBluetooth(String data) async {
     if (isTime()) {
-      _connection!.output.add(Uint8List.fromList(utf8.encode(data + "\r\n")));
+      _connection!.output.add(Uint8List.fromList(utf8.encode(data + "\n")));
       await _connection!.output.allSent.then(
           (value) => sinceLastWrite = DateTime.now().millisecondsSinceEpoch);
     }

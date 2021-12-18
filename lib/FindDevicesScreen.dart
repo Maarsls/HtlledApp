@@ -22,7 +22,6 @@ class _FindDevicesScreen extends State<FindDevicesScreen> {
   @override
   void initState() {
     super.initState();
-    print("jnasdljfnaksd");
     getPairedDevices();
   }
 
@@ -58,6 +57,7 @@ class _FindDevicesScreen extends State<FindDevicesScreen> {
       //is used to make the widget refreshable
       onRefresh: getPairedDevices,
       child: ListView.builder(
+        padding: const EdgeInsets.all(8),
         itemCount: _devicesList.length,
         itemBuilder: (context, index) {
           return ListTile(

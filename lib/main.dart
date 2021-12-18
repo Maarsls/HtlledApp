@@ -1,3 +1,5 @@
+// @dart=2.3
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:htl_led/BluetoothOffScreen.dart';
@@ -22,6 +24,7 @@ class MainApp extends StatelessWidget {
             }
             return BluetoothOffScreen(state: state);
           }),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
