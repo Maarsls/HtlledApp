@@ -1,4 +1,4 @@
-# htl_led
+# HTLLED App (Android and IOS)
 
 Eine App für die Steuerung unseres eigens entwickelnen LED Projekts. 
 Mehr Infos findest du auf unserer [Website](https://htlled.at).
